@@ -26,13 +26,13 @@
 
 **Purpose**: Fresh Angular project replaces React; tooling configured
 
-- [ ] T001 Scaffold fresh Angular project in `frontend/` with `ng new` (standalone components, signals, latest stable, Vite/esbuild builder), reusing existing `frontend/index.html`, `frontend/public/`
-- [ ] T002 Remove React sources: `frontend/src/client/`, `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/routes/`, `frontend/src/lib/`, `frontend/src/main.tsx`, `frontend/src/routeTree.gen.ts`, `frontend/vite.config.ts`, `frontend/openapi-ts.config.ts`, `frontend/components.json`; keep `frontend/openapi.json`, `frontend/tests/`, `frontend/playwright.config.ts`
-- [ ] T003 Install and configure PrimeNG (Aura theme, light/dark presets) + Tailwind + @tanstack/angular-query in `frontend/package.json`, `frontend/angular.json`
-- [ ] T004 [P] Configure Biome for Angular sources (TS/HTML) in `frontend/biome.json` and repo root `biome.json`, ignore `frontend/dist/`
-- [ ] T005 [P] Configure Vitest unit testing in `frontend/angular.json` (test builder) and `frontend/vitest.config.ts`
-- [ ] T006 [P] Configure ng-openapi-gen: npm script `generate-client` and `frontend/ng-openapi-gen.json` outputting to `frontend/src/app/core/api/`
-- [ ] T007 Verify scaffold: `ng build` succeeds, `ng test` smoke test passes, `biome check` clean in `frontend/`
+- [X] T001 Scaffold fresh Angular project in `frontend/` with `ng new` (standalone components, signals, latest stable, Vite/esbuild builder), reusing existing `frontend/index.html`, `frontend/public/`
+- [X] T002 Remove React sources: `frontend/src/client/`, `frontend/src/components/`, `frontend/src/hooks/`, `frontend/src/routes/`, `frontend/src/lib/`, `frontend/src/main.tsx`, `frontend/src/routeTree.gen.ts`, `frontend/vite.config.ts`, `frontend/openapi-ts.config.ts`, `frontend/components.json`; keep `frontend/openapi.json`, `frontend/tests/`, `frontend/playwright.config.ts`
+- [X] T003 Install and configure PrimeNG (Aura theme, light/dark presets) + Tailwind + @tanstack/angular-query in `frontend/package.json`, `frontend/angular.json`
+- [X] T004 [P] Configure Biome for Angular sources (TS/HTML) in `frontend/biome.json` and repo root `biome.json`, ignore `frontend/dist/`
+- [X] T005 [P] Configure Vitest unit testing in `frontend/angular.json` (test builder) and `frontend/vitest.config.ts`
+- [X] T006 [P] Configure ng-openapi-gen: npm script `generate-client` and `frontend/ng-openapi-gen.json` outputting to `frontend/src/app/core/api/`
+- [X] T007 Verify scaffold: `ng build` succeeds, `ng test` smoke test passes, `biome check` clean in `frontend/`
 
 **Checkpoint**: Angular project builds and tests; React sources gone
 
