@@ -1,50 +1,52 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report (v1.0.0 → v1.1.0)
+- Version change: 1.0.0 → 1.1.0 (MINOR)
+- Modified principles:
+  - V. Tooling Consistency → expanded: agent-browser mandated for browser/E2E testing
+- Added sections:
+  - VI. Spec Compliance (new principle)
+  - Governance: compliance review expectations expanded (spec check on every change)
+- Removed sections: none
+- Deferred TODOs: none
+-->
+
+# Angular Frontend Migration Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Frontend-Only Scope
+Backend (FastAPI + SQLModel) is untouchable. The OpenAPI contract is the single source of truth between backend and frontend. No backend schema, endpoint, or behavior changes are permitted in this work.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Big-Bang Rewrite
+The React frontend is deleted and replaced by a fresh Angular project. No React/Angular coexistence. The Playwright E2E suite is the parity contract: test intent must survive, but selectors and DOM expectations may be updated for the new stack.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Angular Idiom
+Latest stable Angular (standalone components, signals, control flow) with @tanstack/angular-query for server state. Generated API client via ng-openapi-gen from `frontend/openapi.json`. No hand-written API clients.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. UI Library
+PrimeNG for widgets (forms, tables, dialogs, dropdowns, toasts). Custom layout shell (sidebar, header) is hand-built with Tailwind. A new design is acceptable; dark mode is still required via PrimeNG theme switching.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Tooling Consistency
+Biome remains the lint/format tool for the whole repository. ESLint may be added only for Angular template files if required. Vitest for unit tests. Angular CLI is the build system.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Browser and E2E testing MUST use agent-browser. Agent-browser is the tool for exploratory testing, dogfooding, QA, and any manual verification of the running application; no alternative browser automation is used for verification.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### VI. Spec Compliance
+Every codebase modification, including refactors, fixes, and tooling changes, MUST be checked against the active feature spec (`specs/` directory, referenced by `.specify/feature.json`) before it is considered complete. If a change cannot be reconciled with the spec, the spec MUST be amended first (via the Spec Kit workflow); implementing past the spec is a violation.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Rationale: specs are the contract with stakeholders; drift accumulates silently unless every change is validated against them.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Feature Parity
+
+The rewritten frontend must preserve: login, signup, recover password, reset password, dashboard, items CRUD, admin user CRUD with data table (sort, paginate, search), user settings (profile, password, appearance), sidebar pending counts, dark mode, 404 page, loading and error states.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- The Playwright E2E suite (8 spec files) must pass before the migration is considered complete.
+- Unit tests (Vitest) required for auth service, theme service, and at least one CRUD feature.
+- Lint and typecheck must be green at every phase boundary.
+- Compliance review: at every phase boundary and before any commit, changes are verified against the active spec's functional requirements and success criteria. Unverified changes are not merged.
+- Browser-level verification of implemented features uses agent-browser before sign-off.
+- This constitution supersedes ad-hoc decisions; amendments require documentation and approval.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.1.0 | **Ratified**: 2026-08-04 | **Last Amended**: 2026-08-04
