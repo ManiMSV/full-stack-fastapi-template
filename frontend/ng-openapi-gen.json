@@ -1,5 +1,0 @@
-{
-  "input": "openapi.json",
-  "output": "src/app/core/api",
-  "indexFile": true
-}

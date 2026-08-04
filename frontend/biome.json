@@ -1,17 +1,15 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "files": {
     "includes": [
       "**",
       "!**/dist/**/*",
       "!**/node_modules/**/*",
-      "!**/.angular/**/*",
-      "!**/public/**/*",
-      "!**/src/app/core/api/**/*",
-      "!**/playwright-report/**/*",
-      "!**/test-results/**/*",
-      "!**/blob-report/**/*",
+      "!**/src/routeTree.gen.ts",
+      "!**/src/client/**/*",
+      "!**/src/components/ui/**/*",
+      "!**/playwright-report",
       "!**/playwright.config.ts"
     ]
   },
@@ -38,11 +36,6 @@
     "formatter": {
       "quoteStyle": "double",
       "semicolons": "asNeeded"
-    }
-  },
-  "html": {
-    "formatter": {
-      "indentStyle": "space"
     }
   },
   "css": {
