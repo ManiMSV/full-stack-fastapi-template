@@ -270,7 +270,7 @@ With multiple developers:
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
 - Verify tests fail before implementing
-- Commit after each task or logical group
+- After each task or logical group: STOP and wait for author approval of the code before committing. Once approved: commit, raise the PR, then let the author manually approve and merge it. Never commit, push, or open/merge a PR without explicit author approval.
 - Stop at any checkpoint to validate story independently
 - Constitution v1.1.0 principle VI: after every task, check the change against `specs/001-angular-frontend-migration/spec.md`; amend spec before deviating
 - agent-browser (constitution V) is the browser-verification tool for all verification tasks
