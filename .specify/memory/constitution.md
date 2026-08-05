@@ -1,16 +1,18 @@
 <!--
-Sync Impact Report (v1.0.0 → v1.1.0)
-- Version change: 1.0.0 → 1.1.0 (MINOR)
+Sync Impact Report (v1.1.0 → v1.2.0)
+- Version change: 1.1.0 → 1.2.0 (MINOR)
 - Modified principles:
-  - V. Tooling Consistency → expanded: agent-browser mandated for browser/E2E testing
+  - Title: Angular Frontend Migration Constitution → Full-Stack FastAPI Template
+    Constitution (generalized to govern all project work)
+  - Governance: added merge-gate and message-compliance expectations
 - Added sections:
-  - VI. Spec Compliance (new principle)
-  - Governance: compliance review expectations expanded (spec check on every change)
+  - Development Workflow (VII. One Issue per Branch, VIII. Branch + PR Review
+    Gate, IX. What/Where/How Messages)
 - Removed sections: none
 - Deferred TODOs: none
 -->
 
-# Angular Frontend Migration Constitution
+# Full-Stack FastAPI Template Constitution
 
 ## Core Principles
 
@@ -40,13 +42,32 @@ Rationale: specs are the contract with stakeholders; drift accumulates silently 
 
 The rewritten frontend must preserve: login, signup, recover password, reset password, dashboard, items CRUD, admin user CRUD with data table (sort, paginate, search), user settings (profile, password, appearance), sidebar pending counts, dark mode, 404 page, loading and error states.
 
+## Development Workflow
+
+### VII. One Issue per Branch
+Every change is tied to exactly one issue. A branch MUST never contain work for more than one issue, and unrelated changes (fixes, refactors, formatting) MUST NOT ride along — they are filed as their own issues. Multiple issues may be in flight in parallel, but each lives on its own branch.
+
+Rationale: single-purpose branches keep reviews tractable, reverts clean, and history trustworthy.
+
+### VIII. Branch + PR Review Gate
+Every issue is worked on a dedicated branch named `issue/{number}-{short-slug}`. Merging into main happens ONLY through a pull request approved by the maintainer. If the maintainer has not reviewed, the work waits — there is no time-based override, self-approval, or direct push.
+
+### IX. What/Where/How Messages
+Every commit message and every PR body MUST state:
+- What — the change that was made;
+- Where — the files, modules, or components touched;
+- How — the approach or mechanism used.
+
+A message missing any of the three is incomplete and MUST be corrected before merge.
+
 ## Governance
 
 - The Playwright E2E suite (8 spec files) must pass before the migration is considered complete.
 - Unit tests (Vitest) required for auth service, theme service, and at least one CRUD feature.
 - Lint and typecheck must be green at every phase boundary.
 - Compliance review: at every phase boundary and before any commit, changes are verified against the active spec's functional requirements and success criteria. Unverified changes are not merged.
+- At merge time the maintainer verifies: single-issue branch scope, branch naming (`issue/{number}-{short-slug}`), and What/Where/How completeness in the PR body and every commit message.
 - Browser-level verification of implemented features uses agent-browser before sign-off.
 - This constitution supersedes ad-hoc decisions; amendments require documentation and approval.
 
-**Version**: 1.1.0 | **Ratified**: 2026-08-04 | **Last Amended**: 2026-08-04
+**Version**: 1.2.0 | **Ratified**: 2026-08-04 | **Last Amended**: 2026-08-05
