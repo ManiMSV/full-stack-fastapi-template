@@ -66,7 +66,7 @@
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T022 [P] [US1] Write Vitest unit tests for auth service (token persistence, login/logout, 401 handling) in `frontend/src/app/core/auth.service.spec.ts`
+- [X] T022 [P] [US1] Write Vitest unit tests for auth service (token persistence, login/logout, 401 handling) in `frontend/src/app/core/auth.service.spec.ts`
 - [ ] T023 [US1] Update E2E specs `frontend/tests/login.spec.ts`, `frontend/tests/sign-up.spec.ts`, `frontend/tests/reset-password.spec.ts` (PrimeNG selector/DOM updates, intent unchanged)
 
 ### Implementation for User Story 1
