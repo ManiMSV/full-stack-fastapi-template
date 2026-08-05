@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import 'dotenv/config'
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:5173'
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4200'
 
 /**
  * Read environment variables from file.
