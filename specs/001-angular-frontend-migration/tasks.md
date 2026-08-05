@@ -52,7 +52,7 @@
 - [X] T013 Build layout shell in `frontend/src/app/shared/layout/` (sidebar with nav entries and pending-count placeholders, header, `<router-outlet>`)
 - [X] T014 [P] Build shared UI states in `frontend/src/app/shared/ui/` (loading spinner, error state with retry, empty state)
 - [X] T015 Update Playwright harness in `frontend/tests/auth.setup.ts` and `frontend/tests/config.ts` (new app URL/route assumptions, storage key names)
-- [ ] T016 Build 404 page in `frontend/src/app/shared/layout/not-found/not-found.component.ts` wired to wildcard route
+- [X] T016 Build 404 page in `frontend/src/app/shared/layout/not-found/not-found.component.ts` wired to wildcard route
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
