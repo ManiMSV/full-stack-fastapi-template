@@ -45,7 +45,7 @@
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
 - [X] T008 Generate Angular API services with `ng-openapi-gen` from `frontend/openapi.json` into `frontend/src/app/core/api/` (regenerate via `scripts/generate-client.sh` if stale)
-- [ ] T009 Implement auth service in `frontend/src/app/core/auth.service.ts` (token storage in localStorage, login/logout/me, session signal)
+- [X] T009 Implement auth service in `frontend/src/app/core/auth.service.ts` (token storage in localStorage, login/logout/me, session signal)
 - [ ] T010 [P] Implement HTTP interceptor in `frontend/src/app/core/auth.interceptor.ts` (attach Bearer token, on 401 clear session and redirect to `/login`)
 - [ ] T011 [P] Implement theme service in `frontend/src/app/core/theme.service.ts` (light/dark signal, localStorage persistence, applies PrimeNG dark theme class)
 - [ ] T012 Implement auth guard and route skeleton in `frontend/src/app/app.routes.ts` (lazy-loaded feature routes, protected routes, wildcard -> 404, root redirect)
