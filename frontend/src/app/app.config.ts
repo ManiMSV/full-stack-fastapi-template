@@ -1,3 +1,4 @@
+import { provideHttpClient, withInterceptors } from "@angular/common/http"
 import {
   type ApplicationConfig,
   provideBrowserGlobalErrorListeners,
@@ -12,12 +13,14 @@ import {
 import { providePrimeNG } from "primeng/config"
 
 import { routes } from "./app.routes"
+import { authInterceptor } from "./core/auth.interceptor"
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     providePrimeNG({
       theme: {
         preset: Aura,
