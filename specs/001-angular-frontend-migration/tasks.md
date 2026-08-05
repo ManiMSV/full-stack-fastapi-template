@@ -46,8 +46,8 @@
 
 - [X] T008 Generate Angular API services with `ng-openapi-gen` from `frontend/openapi.json` into `frontend/src/app/core/api/` (regenerate via `scripts/generate-client.sh` if stale)
 - [X] T009 Implement auth service in `frontend/src/app/core/auth.service.ts` (token storage in localStorage, login/logout/me, session signal)
-- [ ] T010 [P] Implement HTTP interceptor in `frontend/src/app/core/auth.interceptor.ts` (attach Bearer token, on 401 clear session and redirect to `/login`)
-- [ ] T011 [P] Implement theme service in `frontend/src/app/core/theme.service.ts` (light/dark signal, localStorage persistence, applies PrimeNG dark theme class)
+- [X] T010 [P] Implement HTTP interceptor in `frontend/src/app/core/auth.interceptor.ts` (attach Bearer token, on 401 clear session and redirect to `/login`)
+- [X] T011 [P] Implement theme service in `frontend/src/app/core/theme.service.ts` (light/dark signal, localStorage persistence, applies PrimeNG dark theme class)
 - [ ] T012 Implement auth guard and route skeleton in `frontend/src/app/app.routes.ts` (lazy-loaded feature routes, protected routes, wildcard -> 404, root redirect)
 - [ ] T013 Build layout shell in `frontend/src/app/shared/layout/` (sidebar with nav entries and pending-count placeholders, header, `<router-outlet>`)
 - [ ] T014 [P] Build shared UI states in `frontend/src/app/shared/ui/` (loading spinner, error state with retry, empty state)
