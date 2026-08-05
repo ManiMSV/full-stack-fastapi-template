@@ -71,7 +71,7 @@
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Implement login page in `frontend/src/app/features/auth/login/login.component.ts` (PrimeNG form, validation, error display)
+- [X] T017 [P] [US1] Implement login page in `frontend/src/app/features/auth/login/login.component.ts` (PrimeNG form, validation, error display)
 - [ ] T018 [P] [US1] Implement signup page in `frontend/src/app/features/auth/signup/signup.component.ts` (validation matching current rules, auto-login on success)
 - [ ] T019 [P] [US1] Implement recover-password page in `frontend/src/app/features/auth/recover-password/recover-password.component.ts`
 - [ ] T020 [P] [US1] Implement reset-password page in `frontend/src/app/features/auth/reset-password/reset-password.component.ts`
