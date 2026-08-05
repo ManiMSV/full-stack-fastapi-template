@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core"
+import { Component, inject, type OnInit } from "@angular/core"
 import {
   FormControl,
   FormGroup,
@@ -75,9 +75,15 @@ import { AuthService } from "../../../core/auth.service"
     </div>
   `,
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private readonly authService = inject(AuthService)
   private readonly router = inject(Router)
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated) {
+      this.router.navigate(["/dashboard"])
+    }
+  }
 
   protected readonly form = new FormGroup({
     email: new FormControl("", {
