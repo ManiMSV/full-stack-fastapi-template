@@ -1,4 +1,4 @@
-import { Component, inject, type OnInit } from "@angular/core"
+import { Component, inject, type OnInit, signal } from "@angular/core"
 import {
   type AbstractControl,
   FormControl,
@@ -9,8 +9,8 @@ import {
 } from "@angular/forms"
 import { Router, RouterLink } from "@angular/router"
 import { Button } from "primeng/button"
+import { InputPassword } from "primeng/inputpassword"
 import { InputText } from "primeng/inputtext"
-import { Password } from "primeng/password"
 
 import { Api } from "../../../core/api/api"
 import { usersRegisterUser } from "../../../core/api/fn/users/users-register-user"
@@ -26,10 +26,11 @@ function passwordsMatchValidator(
 
 @Component({
   selector: "app-signup",
-  imports: [ReactiveFormsModule, InputText, Password, Button, RouterLink],
+  imports: [ReactiveFormsModule, InputText, InputPassword, Button, RouterLink],
   template: `
     <div class="flex min-h-screen items-center justify-center p-4">
       <form
+        [formGroup]="form"
         class="w-full max-w-sm space-y-4"
         (ngSubmit)="submit()"
         (keydown.enter)="submit()"
@@ -66,16 +67,14 @@ function passwordsMatchValidator(
         </div>
 
         <div class="space-y-1">
-          <p-password styleClass="w-full">
-            <input
-              pPassword
-              data-testid="password-input"
-              formControlName="password"
-              type="password"
-              placeholder="Password"
-              class="w-full"
-            />
-          </p-password>
+          <input
+            pInputPassword
+            data-testid="password-input"
+            formControlName="password"
+            type="password"
+            placeholder="Password"
+            class="w-full"
+          />
           @if (password.invalid && password.touched) {
             @if (password.hasError("minlength")) {
               <p class="text-sm text-red-500">Password must be at least 8 characters</p>
@@ -86,31 +85,25 @@ function passwordsMatchValidator(
         </div>
 
         <div class="space-y-1">
-          <p-password styleClass="w-full">
-            <input
-              pPassword
-              data-testid="confirm-password-input"
-              formControlName="confirmPassword"
-              type="password"
-              placeholder="Confirm Password"
-              class="w-full"
-            />
-          </p-password>
-          @if (confirmPassword.invalid && confirmPassword.touched) {
-            @if (group.hasError("mismatch") && !confirmPassword.hasError("required")) {
-              <p class="text-sm text-red-500">The passwords don't match</p>
-            } @else {
-              <p class="text-sm text-red-500">Password is required</p>
-            }
+          <input
+            pInputPassword
+            data-testid="confirm-password-input"
+            formControlName="confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+            class="w-full"
+          />
+          @if (confirmPassword.touched && group.hasError("mismatch")) {
+            <p class="text-sm text-red-500">The passwords don't match</p>
           }
         </div>
 
-        @if (errorMessage) {
-          <p class="text-sm text-red-500">{{ errorMessage }}</p>
+        @if (errorMessage()) {
+          <p class="text-sm text-red-500">{{ errorMessage() }}</p>
         }
 
         <div class="flex flex-col gap-2">
-          <p-button label="Sign Up" [disabled]="loading" (onClick)="submit()" />
+          <p-button label="Sign Up" [disabled]="loading()" (onClick)="submit()" />
           <a routerLink="/login" class="text-sm text-primary-500 hover:underline">
             Log In
           </a>
@@ -148,8 +141,8 @@ export class SignupComponent implements OnInit {
     { validators: [passwordsMatchValidator] },
   )
 
-  protected errorMessage = ""
-  protected loading = false
+  protected readonly errorMessage = signal("")
+  protected readonly loading = signal(false)
 
   protected get group(): FormGroup {
     return this.form
@@ -173,14 +166,14 @@ export class SignupComponent implements OnInit {
 
   protected async submit(): Promise<void> {
     this.form.markAllAsTouched()
-    if (this.form.invalid || this.loading) {
+    if (this.form.invalid || this.loading()) {
       return
     }
     const fullName = this.fullName.value ?? ""
     const email = this.email.value ?? ""
     const password = this.password.value ?? ""
-    this.loading = true
-    this.errorMessage = ""
+    this.loading.set(true)
+    this.errorMessage.set("")
     try {
       await this.api.invoke(usersRegisterUser, {
         body: { email, password, full_name: fullName },
@@ -188,10 +181,11 @@ export class SignupComponent implements OnInit {
       await this.authService.login(email, password)
       await this.router.navigate(["/dashboard"])
     } catch {
-      this.errorMessage =
-        "The user with this email already exists in the system"
+      this.errorMessage.set(
+        "The user with this email already exists in the system",
+      )
     } finally {
-      this.loading = false
+      this.loading.set(false)
     }
   }
 }

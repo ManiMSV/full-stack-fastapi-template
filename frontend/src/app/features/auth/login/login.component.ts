@@ -1,4 +1,4 @@
-import { Component, inject, type OnInit } from "@angular/core"
+import { Component, inject, type OnInit, signal } from "@angular/core"
 import {
   FormControl,
   FormGroup,
@@ -7,17 +7,18 @@ import {
 } from "@angular/forms"
 import { Router, RouterLink } from "@angular/router"
 import { Button } from "primeng/button"
+import { InputPassword } from "primeng/inputpassword"
 import { InputText } from "primeng/inputtext"
-import { Password } from "primeng/password"
 
 import { AuthService } from "../../../core/auth.service"
 
 @Component({
   selector: "app-login",
-  imports: [ReactiveFormsModule, InputText, Password, Button, RouterLink],
+  imports: [ReactiveFormsModule, InputText, InputPassword, Button, RouterLink],
   template: `
     <div class="flex min-h-screen items-center justify-center p-4">
       <form
+        [formGroup]="form"
         class="w-full max-w-sm space-y-4"
         (ngSubmit)="submit()"
         (keydown.enter)="submit()"
@@ -43,27 +44,25 @@ import { AuthService } from "../../../core/auth.service"
         </div>
 
         <div class="space-y-1">
-          <p-password styleClass="w-full">
-            <input
-              pPassword
-              data-testid="password-input"
-              formControlName="password"
-              type="password"
-              placeholder="Password"
-              class="w-full"
-            />
-          </p-password>
+          <input
+            pInputPassword
+            data-testid="password-input"
+            formControlName="password"
+            type="password"
+            placeholder="Password"
+            class="w-full"
+          />
           @if (password.invalid && password.touched) {
             <p class="text-sm text-red-500">Password is required</p>
           }
         </div>
 
-        @if (errorMessage) {
-          <p class="text-sm text-red-500">{{ errorMessage }}</p>
+        @if (errorMessage()) {
+          <p class="text-sm text-red-500">{{ errorMessage() }}</p>
         }
 
         <div class="flex flex-col gap-2">
-          <p-button label="Log In" [disabled]="loading" (onClick)="submit()" />
+          <p-button label="Log In" [disabled]="loading()" (onClick)="submit()" />
           <a
             routerLink="/recover-password"
             class="text-sm text-primary-500 hover:underline"
@@ -94,8 +93,8 @@ export class LoginComponent implements OnInit {
     }),
   })
 
-  protected errorMessage = ""
-  protected loading = false
+  protected readonly errorMessage = signal("")
+  protected readonly loading = signal(false)
 
   protected get email(): FormControl<string | null> {
     return this.form.controls.email
@@ -107,11 +106,11 @@ export class LoginComponent implements OnInit {
 
   protected async submit(): Promise<void> {
     this.form.markAllAsTouched()
-    if (this.form.invalid || this.loading) {
+    if (this.form.invalid || this.loading()) {
       return
     }
-    this.loading = true
-    this.errorMessage = ""
+    this.loading.set(true)
+    this.errorMessage.set("")
     try {
       await this.authService.login(
         this.email.value ?? "",
@@ -119,9 +118,9 @@ export class LoginComponent implements OnInit {
       )
       await this.router.navigate(["/dashboard"])
     } catch {
-      this.errorMessage = "Incorrect email or password"
+      this.errorMessage.set("Incorrect email or password")
     } finally {
-      this.loading = false
+      this.loading.set(false)
     }
   }
 }

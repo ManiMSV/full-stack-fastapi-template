@@ -16,7 +16,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 && !router.url.startsWith("/login")) {
+      const isPrivilegeError =
+        error.status === 403 &&
+        error.error?.detail === "The user doesn't have enough privileges"
+      const isSessionExpired =
+        error.status === 401 || (error.status === 403 && !isPrivilegeError)
+      if (isSessionExpired && !router.url.startsWith("/login")) {
         authService.logout()
         router.navigate(["/login"])
       }

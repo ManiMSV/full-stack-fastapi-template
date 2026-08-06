@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core"
+import { Component, inject, signal } from "@angular/core"
 import {
   type AbstractControl,
   FormControl,
@@ -9,7 +9,7 @@ import {
 } from "@angular/forms"
 import { ActivatedRoute } from "@angular/router"
 import { Button } from "primeng/button"
-import { Password } from "primeng/password"
+import { InputPassword } from "primeng/inputpassword"
 
 import { Api } from "../../../core/api/api"
 import { loginResetPassword } from "../../../core/api/fn/login/login-reset-password"
@@ -24,10 +24,11 @@ function passwordsMatchValidator(
 
 @Component({
   selector: "app-reset-password",
-  imports: [ReactiveFormsModule, Password, Button],
+  imports: [ReactiveFormsModule, InputPassword, Button],
   template: `
     <div class="flex min-h-screen items-center justify-center p-4">
       <form
+        [formGroup]="form"
         class="w-full max-w-sm space-y-4"
         (ngSubmit)="submit()"
         (keydown.enter)="submit()"
@@ -37,16 +38,14 @@ function passwordsMatchValidator(
         </h1>
 
         <div class="space-y-1">
-          <p-password styleClass="w-full">
-            <input
-              pPassword
-              data-testid="new-password-input"
-              formControlName="password"
-              type="password"
-              placeholder="New Password"
-              class="w-full"
-            />
-          </p-password>
+          <input
+            pInputPassword
+            data-testid="new-password-input"
+            formControlName="password"
+            type="password"
+            placeholder="New Password"
+            class="w-full"
+          />
           @if (password.invalid && password.touched) {
             @if (password.hasError("minlength")) {
               <p class="text-sm text-red-500">Password must be at least 8 characters</p>
@@ -57,28 +56,26 @@ function passwordsMatchValidator(
         </div>
 
         <div class="space-y-1">
-          <p-password styleClass="w-full">
-            <input
-              pPassword
-              data-testid="confirm-password-input"
-              formControlName="confirmPassword"
-              type="password"
-              placeholder="Confirm Password"
-              class="w-full"
-            />
-          </p-password>
+          <input
+            pInputPassword
+            data-testid="confirm-password-input"
+            formControlName="confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+            class="w-full"
+          />
           @if (group.hasError("mismatch") && confirmPassword.touched && !confirmPassword.hasError("required")) {
             <p class="text-sm text-red-500">The passwords don't match</p>
           }
         </div>
 
-        @if (message) {
-          <p class="text-sm text-emerald-600 dark:text-emerald-400">{{ message }}</p>
+        @if (message()) {
+          <p class="text-sm text-emerald-600 dark:text-emerald-400">{{ message() }}</p>
         }
 
         <p-button
           label="Reset Password"
-          [disabled]="loading"
+          [disabled]="loading()"
           (onClick)="submit()"
         />
       </form>
@@ -101,8 +98,8 @@ export class ResetPasswordComponent {
     { validators: [passwordsMatchValidator] },
   )
 
-  protected message = ""
-  protected loading = false
+  protected readonly message = signal("")
+  protected readonly loading = signal(false)
 
   protected get group(): FormGroup {
     return this.form
@@ -118,22 +115,22 @@ export class ResetPasswordComponent {
 
   protected async submit(): Promise<void> {
     this.form.markAllAsTouched()
-    if (this.form.invalid || this.loading) {
+    if (this.form.invalid || this.loading()) {
       return
     }
     const token = this.route.snapshot.queryParamMap.get("token") ?? ""
     const newPassword = this.password.value ?? ""
-    this.loading = true
-    this.message = ""
+    this.loading.set(true)
+    this.message.set("")
     try {
       await this.api.invoke(loginResetPassword, {
         body: { token, new_password: newPassword },
       })
-      this.message = "Password updated successfully"
+      this.message.set("Password updated successfully")
     } catch {
-      this.message = "Invalid token"
+      this.message.set("Invalid token")
     } finally {
-      this.loading = false
+      this.loading.set(false)
     }
   }
 }

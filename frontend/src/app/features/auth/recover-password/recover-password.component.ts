@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core"
+import { Component, inject, signal } from "@angular/core"
 import {
   FormControl,
   FormGroup,
@@ -17,6 +17,7 @@ import { loginRecoverPassword } from "../../../core/api/fn/login/login-recover-p
   template: `
     <div class="flex min-h-screen items-center justify-center p-4">
       <form
+        [formGroup]="form"
         class="w-full max-w-sm space-y-4"
         (ngSubmit)="submit()"
         (keydown.enter)="submit()"
@@ -43,13 +44,13 @@ import { loginRecoverPassword } from "../../../core/api/fn/login/login-recover-p
           }
         </div>
 
-        @if (message) {
-          <p class="text-sm text-emerald-600 dark:text-emerald-400">{{ message }}</p>
+        @if (message()) {
+          <p class="text-sm text-emerald-600 dark:text-emerald-400">{{ message() }}</p>
         }
 
         <p-button
           label="Continue"
-          [disabled]="loading"
+          [disabled]="loading()"
           (onClick)="submit()"
         />
       </form>
@@ -65,8 +66,8 @@ export class RecoverPasswordComponent {
     }),
   })
 
-  protected message = ""
-  protected loading = false
+  protected readonly message = signal("")
+  protected readonly loading = signal(false)
 
   protected get email(): FormControl<string | null> {
     return this.form.controls.email
@@ -74,20 +75,20 @@ export class RecoverPasswordComponent {
 
   protected async submit(): Promise<void> {
     this.form.markAllAsTouched()
-    if (this.form.invalid || this.loading) {
+    if (this.form.invalid || this.loading()) {
       return
     }
-    this.loading = true
-    this.message = ""
+    this.loading.set(true)
+    this.message.set("")
     try {
       await this.api.invoke(loginRecoverPassword, {
         email: this.email.value ?? "",
       })
-      this.message = "Password recovery email sent"
+      this.message.set("Password recovery email sent")
     } catch {
-      this.message = "Password recovery email sent"
+      this.message.set("Password recovery email sent")
     } finally {
-      this.loading = false
+      this.loading.set(false)
     }
   }
 }
